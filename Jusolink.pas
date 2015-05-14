@@ -57,6 +57,27 @@ type
                 message : string;
         end;
 
+        TSidoCount = class
+        public
+             GYEONGGI                  : Integer;
+             GYEONGSANGBUK             : Integer;
+             GYEONGSANGNAM             : Integer;
+             SEOUL                     : Integer;
+             JEOLLANAM                 : Integer;
+             CHUNGCHEONGNAM            : Integer;
+             JEOLLABUK                 : Integer;
+             BUSAN                     : Integer;
+             GANGWON                   : Integer;
+             CHUNGCHEONGBUK            : Integer;
+             DAEGU                     : Integer;
+             INCHEON                   : Integer;
+             GWANGJU                   : Integer;
+             JEJU                      : Integer;
+             DAEJEON                   : Integer;
+             ULSAN                     : Integer;
+             SEJONG                    : Integer;
+        end;
+
         TJusoInfo = class
         public
                 roadAddr1               : string;
@@ -70,7 +91,7 @@ type
                 streetCode              : string;
 
         end;
- 
+
         TSearchResult = class
                 searches                : string;
                 deletedWord             : ArrayOfString;
@@ -81,6 +102,7 @@ type
                 page                    : Integer;
                 chargeYN                : Boolean;
                 juso                    : Array Of TJusoInfo;
+                sidoCount               : TSidoCount
         end;
 
         TJusolinkService = class
@@ -273,14 +295,14 @@ function TJusolinkService.jsonToTSearchResult(json : String) : TSearchResult;
 var
         jSons : ArrayOfString;
         jSonsDetailBuilding : ArrayOfString;
-        jSonsRelatedJibun : ArrayOfString;        
+        jSonsRelatedJibun : ArrayOfString;
+        jSonSidoCount : ArrayOfString;
         i : Integer;
         j : Integer;
 
 begin
         result := TSearchResult.Create;
         result.searches := getJsonString(json, 'searches');
-
 
         try
                 jSons := getJsonList(json,'deletedWord');
@@ -301,6 +323,29 @@ begin
         result.totalPage := getJsonInteger(json, 'totalPage');
         result.page := getJsonInteger(json, 'page');
         result.chargeYN := getJsonBoolean(json, 'chargeYN');
+
+        result.sidoCount := TSidoCount.Create;
+        if Length(getJsonList(json, 'sidoCount')) >0  then
+        begin
+                jsonSidoCount := getJsonList(json, 'sidoCount');
+                if getJsonInteger(jSonSidoCount[0], 'GYEONGGI') > 0 then result.sidoCount.GYEONGGI := getJsonInteger(jSonSidoCount[0], 'GYEONGGI');
+                if getJsonInteger(jSonSidoCount[0], 'GYEONGSANGBUK') > 0 then result.sidoCount.GYEONGSANGBUK := getJsonInteger(jSonSidoCount[0], 'GYEONGSANGBUK');
+                if getJsonInteger(jSonSidoCount[0], 'GYEONGSANGNAM') > 0 then result.sidoCount.GYEONGSANGNAM := getJsonInteger(jSonSidoCount[0], 'GYEONGSANGNAM');
+                if getJsonInteger(jSonSidoCount[0], 'SEOUL') > 0 then result.sidoCount.SEOUL := getJsonInteger(jSonSidoCount[0], 'SEOUL');
+                if getJsonInteger(jSonSidoCount[0], 'JEOLLANAM') > 0 then result.sidoCount.JEOLLANAM := getJsonInteger(jSonSidoCount[0], 'JEOLLANAM');
+                if getJsonInteger(jSonSidoCount[0], 'CHUNGCHEONGNAM') > 0 then result.sidoCount.CHUNGCHEONGNAM := getJsonInteger(jSonSidoCount[0], 'CHUNGCHEONGNAM');
+                if getJsonInteger(jSonSidoCount[0], 'JEOLLABUK') > 0 then result.sidoCount.JEOLLABUK := getJsonInteger(jSonSidoCount[0], 'JEOLLABUK');
+                if getJsonInteger(jSonSidoCount[0], 'BUSAN') > 0 then result.sidoCount.BUSAN := getJsonInteger(jSonSidoCount[0], 'BUSAN');
+                if getJsonInteger(jSonSidoCount[0], 'GANGWON') > 0 then result.sidoCount.GANGWON := getJsonInteger(jSonSidoCount[0], 'GANGWON');
+                if getJsonInteger(jSonSidoCount[0], 'CHUNGCHEONGBUK') > 0 then result.sidoCount.CHUNGCHEONGBUK := getJsonInteger(jSonSidoCount[0], 'CHUNGCHEONGBUK');
+                if getJsonInteger(jSonSidoCount[0], 'DAEGU') > 0 then result.sidoCount.DAEGU := getJsonInteger(jSonSidoCount[0], 'DAEGU');
+                if getJsonInteger(jSonSidoCount[0], 'INCHEON') > 0 then result.sidoCount.INCHEON := getJsonInteger(jSonSidoCount[0], 'INCHEON');
+                if getJsonInteger(jSonSidoCount[0], 'GWANGJU') > 0 then result.sidoCount.GWANGJU := getJsonInteger(jSonSidoCount[0], 'GWANGJU');
+                if getJsonInteger(jSonSidoCount[0], 'JEJU') > 0 then result.sidoCount.JEJU := getJsonInteger(jSonSidoCount[0], 'JEJU');
+                if getJsonInteger(jSonSidoCount[0], 'DAEJEON') > 0 then result.sidoCount.DAEJEON := getJsonInteger(jSonSidoCount[0], 'DAEJEON');
+                if getJsonInteger(jSonSidoCount[0], 'ULSAN') > 0 then result.sidoCount.ULSAN := getJsonInteger(jSonSidoCount[0], 'ULSAN');
+                if getJsonInteger(jSonSidoCount[0], 'SEJONG') > 0 then result.sidoCount.SEJONG := getJsonInteger(jSonSidoCount[0], 'SEJONG');
+        end;
 
         try
                 jSons := getJsonListString(json, 'juso');
