@@ -422,8 +422,8 @@ var
 begin
         url := '/Search?Searches='+ UrlEncodeUTF8(Index);
 
-        if PerPage <0 then PerPage := 20;
-        if PerPage >51 then PerPage := 50;
+        if PerPage < 0 then PerPage := 20;
+        if PerPage > 100 then PerPage := 100;
 
         if PageNum > 0 then
                 url := url + '&&PageNum='+IntToStr(PageNum);
