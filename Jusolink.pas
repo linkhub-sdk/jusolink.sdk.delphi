@@ -363,7 +363,8 @@ begin
                         result.juso[i].sectionNum := getJsonString(jSons[i], 'sectionNum');
                         result.juso[i].dongCode := getJsonString(jSons[i], 'dongCode');
                         result.juso[i].streetCode := getJsonString(jSons[i], 'streetCode');
-                                                                                                  
+
+                        SetLength(jSonsDetailBuilding, 0);                                                                          
                         jSonsDetailBuilding := getJsonList(jSons[i], 'detailBuildingName');
 
                         SetLength(result.juso[i].detailBuildingName, Length(jSonsDetailBuilding));
@@ -373,6 +374,7 @@ begin
                                 result.juso[i].detailBuildingName[j] := jSonsDetailBuilding[j];
                         end;
 
+                        SetLength(jSonsRelatedJibun, 0);
                         jSonsRelatedJibun := getJsonList(jSons[i], 'relatedJibun');
 
                         SetLength(result.juso[i].relatedJibun, Length(jSonsRelatedJibun));
