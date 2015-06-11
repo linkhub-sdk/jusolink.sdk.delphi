@@ -27,7 +27,7 @@ unit Jusolink;
 
 interface
 uses
-        Windows, Messages, TypInfo, SysUtils, synautil, synachar, Classes, HTTPSend, ssl_openssl, Linkhub;
+        Windows, Messages, TypInfo, SysUtils,   Classes,ComObj,ActiveX,   Linkhub;
 
 {$IFDEF VER240}
 {$DEFINE COMPILER15_UP}
@@ -179,43 +179,33 @@ end;
 
 function TJusolinkService.httpget(url : String) : String;
 var
-        HTTP: THTTPSend;
+        http : olevariant;
         response : string;
         sessiontoken : string;
 begin
         url := ServiceURL + url;
 
-        HTTP := THTTPSend.Create;
-        HTTP.Sock.SSLDoConnect;
+        http:=createoleobject('WinHttp.WinHttpRequest.5.1');
+        http.open('GET',url);
 
         sessiontoken := getSession_Token();
 
-        HTTP.Headers.Add('Authorization: Bearer ' + sessiontoken);
-        HTTP.Headers.Add('x-api-version: ' + APIVersion);
+        http.setRequestHeader('Authorization', 'Bearer ' + sessiontoken);
+        http.setRequestHeader('x-api-version', APIVersion);
 
+        http.send;
+        http.WaitForResponse;
 
-        try
-                if HTTP.HTTPMethod('GET', url) then
-                begin
-                        if HTTP.ResultCode <> 200 then
-                        begin
-                                response := StreamToString(HTTP.Document);
-                                raise EJusolinkException.Create(getJSonInteger(response,'code'),getJSonString(response,'message'));
-                        end;
-                        result := StreamToString(HTTP.Document);
-
-                end
-                else
-                begin
-                    if HTTP.ResultCode <> 200 then
-                    begin
-                        raise EJusolinkException.Create(-99999999,HTTP.ResultString);
-                    end;
-                end;
-
-        finally
-                HTTP.Free;
+        response := http.responsetext;
+        if http.Status <> 200 then
+        begin
+            raise EJusolinkException.Create(getJSonInteger(response,'code'),getJSonString(response,'message'));
+        end
+        else
+        begin
+            result := response;
         end;
+
 end;
 
 function UrlEncodeUTF8(stInput : widestring) : string;
