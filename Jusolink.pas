@@ -163,7 +163,7 @@ begin
         if FToken = nil then noneOrExpired := true
         else begin
                 Expiration := UTCToDate(FToken.expiration);
-                noneOrExpired := expiration < now;
+                noneOrExpired := expiration < UTCToDate(FAuth.getTime());
         end;
 
         if noneOrExpired then
