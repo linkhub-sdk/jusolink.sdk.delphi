@@ -44,6 +44,12 @@ uses
 {$IFDEF VER280}
 {$DEFINE COMPILER15_UP}
 {$ENDIF}
+{$IFDEF VER290}
+{$DEFINE COMPILER15_UP}
+{$ENDIF}
+{$IFDEF VER300}
+{$DEFINE COMPILER15_UP}
+{$ENDIF}
 const
         ServiceID = 'JUSOLINK';
         ServiceURL = 'https://juso.linkhub.co.kr';
