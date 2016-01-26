@@ -108,7 +108,8 @@ type
                 page                    : Integer;
                 chargeYN                : Boolean;
                 juso                    : Array Of TJusoInfo;
-                sidoCount               : TSidoCount
+                sidoCount               : TSidoCount;
+                destructor Destroy; override;
         end;
 
         TJusolinkService = class
@@ -146,6 +147,19 @@ type
 
 implementation
 
+destructor TSearchResult.Destroy;
+var
+  I: Integer;
+begin
+  for I := 0 to Length(juso)-1 do
+    if Assigned(juso[I]) then
+      juso[I].Free;
+  SetLength(juso, 0);
+  if Assigned(sidoCount) then
+    sidoCount.Free;
+
+  inherited Destroy;
+end;
 
 constructor EJusolinkException.Create(code : LongInt; Message : String);
 begin
