@@ -132,6 +132,7 @@ type
                 function search(Index : String; PageNum : Integer) : TSearchResult;overload;
                 function search(Index : String; PageNum : Integer; PerPage : Integer) : TSearchResult;overload;
                 function search(Index : String; PageNum : Integer; PerPage : Integer; noSuggest : Boolean; noDiff : Boolean) : TSearchResult;overload;
+                destructor Destroy; override;
         end;
 
         EJusolinkException = class(Exception)
@@ -158,6 +159,17 @@ begin
   if Assigned(sidoCount) then
     sidoCount.Free;
 
+  inherited Destroy;
+end;
+
+destructor TJusolinkService.Destroy;
+var
+  I: Integer;
+begin
+  if Assigned(FToken) then
+    FToken.Free;
+  if Assigned(FAuth) then
+    FAuth.Free;
   inherited Destroy;
 end;
 
