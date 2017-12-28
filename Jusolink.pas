@@ -20,6 +20,7 @@
 * http://jusolink.com
 * Author : Jeong Yohan (yhjeong@linkhub.co.kr)
 * Written : 2015-05-07
+* Updated : 2017-12-28
 * Thanks for your interest.
 *=================================================================================
 *)
@@ -29,27 +30,13 @@ interface
 uses
         Windows, Messages, TypInfo, SysUtils,   Classes,ComObj,ActiveX,   Linkhub;
 
-{$IFDEF VER240}
-{$DEFINE COMPILER15_UP}
+{$IFDEF CONDITIONALEXPRESSIONS}
+  {$IF System.CompilerVersion >= 24.0}
+    {$LEGACYIFEND ON}
+    {$DEFINE COMPILER15_UP}
+  {$IFEND}
 {$ENDIF}
-{$IFDEF VER250}
-{$DEFINE COMPILER15_UP}
-{$ENDIF}
-{$IFDEF VER260}
-{$DEFINE COMPILER15_UP}
-{$ENDIF}
-{$IFDEF VER270}
-{$DEFINE COMPILER15_UP}
-{$ENDIF}
-{$IFDEF VER280}
-{$DEFINE COMPILER15_UP}
-{$ENDIF}
-{$IFDEF VER290}
-{$DEFINE COMPILER15_UP}
-{$ENDIF}
-{$IFDEF VER300}
-{$DEFINE COMPILER15_UP}
-{$ENDIF}
+
 const
         ServiceID = 'JUSOLINK';
         ServiceURL = 'https://juso.linkhub.co.kr';
